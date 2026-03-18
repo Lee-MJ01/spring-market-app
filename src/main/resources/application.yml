@@ -24,11 +24,16 @@ spring:
             client-secret: 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
             scope: profile, email
             redirect-uri: http://ec2-3-38-140-9.ap-northeast-2.compute.amazonaws.com:8080/shoply/login/oauth2/code/google
+#  datasource:
+#    driver-class-name: oracle.jdbc.OracleDriver
+#    password: 1234
+#    url: jdbc:oracle:thin:@//3.38.140.9:1522/XEPDB1
+#    username: shoply
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    password: 1234
-    url: jdbc:oracle:thin:@//3.38.140.9:1522/XEPDB1
     username: shoply
+    password: '1234'
+    url: jdbc:oracle:thin:@localhost:1521:xe
   devtools:
     livereload:
       enabled: true

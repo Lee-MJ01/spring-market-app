@@ -17,4 +17,7 @@ public class ProFile {
     private int prod_no;
     private String f_name;
     private String f_rdate;
+
+    // 추가: DB의 F_DIST 컬럼과 매핑
+    private int f_dist;
 }
