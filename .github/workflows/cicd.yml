@@ -89,8 +89,7 @@ jobs:
               sleep 3
             fi
 
-            # 애플리케이션 실행 (우리가 만든 로그 경로 활용)
-            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > /home/${{ secrets.AWS_EC2_USER }}/shoply/logs/app.log 2>&1 &
+            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/*.jar > /home/${{ secrets.AWS_EC2_USER }}/shoply/logs/app.log 2>&1 &
           EOF
 
       - name: Cleanup
