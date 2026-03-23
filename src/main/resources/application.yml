@@ -1,42 +1,43 @@
 logging:
   file:
-    name: logs/shoply.log
+    name: /home/ubuntu/shoply/logs/shoply.log # Ubuntu 경로로 수정
   level:
     root: info
+
 mybatis:
   mapper-locations: classpath:mappers/**/*.xml
+
 server:
   tomcat:
     uri-encoding: utf-8
   port: 8080
   servlet:
     context-path: /shoply
+
 spring:
   application:
     name: shoply
     version: 1.0.0-RELEASE
+
+  # 1. 구글 소셜 로그인 설정
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: 175533324145-1bas44qullc0br7nh133gpi349jhcnhh.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             scope: profile, email
-            redirect-uri: http://ec2-3-38-140-9.ap-northeast-2.compute.amazonaws.com:8080/shoply/login/oauth2/code/google
-#  datasource:
-#    driver-class-name: oracle.jdbc.OracleDriver
-#    password: 1234
-#    url: jdbc:oracle:thin:@//3.38.140.9:1522/XEPDB1
-#    username: shoply
+            # redirect-uri는 할당받은 탄력적 IP로 수정
+            redirect-uri: http://18.207.20.187:8080/shoply/login/oauth2/code/google
+
+  # 2. 데이터베이스 설정 (Docker Oracle XE)
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    username: shoply
-    password: '1234'
-    url: jdbc:oracle:thin:@localhost:1521:xe
-  devtools:
-    livereload:
-      enabled: true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: jdbc:oracle:thin:@18.207.20.187:1521:xe
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -47,11 +48,12 @@ spring:
         format_sql: true
         show_sql: true
 
+  # 3. 메일 발송 설정 (Gmail)
   mail:
     host: smtp.gmail.com
     port: 587
-    username: bisunesskyu@gmail.com
-    password: detvitlhtcjlqtah
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -62,16 +64,18 @@ spring:
           ssl:
             trust: smtp.gmail.com
 
+  # 4. 파일 업로드 설정
   servlet:
     multipart:
-      location: upload
+      location: /home/ubuntu/shoply/uploads # 절대 경로 권장
       max-file-size: 10MB
 
   web:
     resources:
-      static-locations: classpath:/static/, classpath:/public/, file:/home/ec2-user/shoply/uploads/
+      static-locations: classpath:/static/, classpath:/public/, file:/home/ubuntu/shoply/uploads/
 
+# 5. SMS 서비스 설정 (Solapi)
 solapi:
-  apiKey: NCSGTLVVAFB7GAHV
-  apiSecret: N7V7FAHACZ8KWKNQPQFUCGSDSWWL4K5E
-  phoneNumber: 01021098237
+  apiKey: ${SOLAPI_API_KEY}
+  apiSecret: ${SOLAPI_API_SECRET}
+  phoneNumber: ${SOLAPI_PHONE}

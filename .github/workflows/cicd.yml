@@ -10,6 +10,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # 1. application.yml의 변수를 GitHub Secrets 값으로 치환
+      - name: Replace Secrets in application.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: 'src/main/resources/application.yml'
+        env:
+          spring.security.oauth2.client.registration.google.client-id: ${{ secrets.GOOGLE_CLIENT_ID }}
+          spring.security.oauth2.client.registration.google.client-secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PASSWORD }}
+          spring.mail.username: ${{ secrets.MAIL_USERNAME }}
+          spring.mail.password: ${{ secrets.MAIL_PASSWORD }}
+          solapi.apiKey: ${{ secrets.SOLAPI_API_KEY }}
+          solapi.apiSecret: ${{ secrets.SOLAPI_API_SECRET }}
+          solapi.phoneNumber: ${{ secrets.SOLAPI_PHONE }}
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -20,9 +36,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2.6.0
-        with:
-          arguments: build
+        run: ./gradlew clean bootJar -x test
 
       - name: Get JAR_FILE
         id: jarfile
@@ -58,15 +72,25 @@ jobs:
             -o StrictHostKeyChecking=no \
             $JAR_FILE \
             ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/${{ secrets.AWS_EC2_USER }}/
-      
+
       - name: Restart Spring Application on EC2
         run: |
           JAR_FILE=$(basename $(ls build/libs/*.jar | head -n 1))
           ssh -i private_key.pem \
             -o StrictHostKeyChecking=no \
-            ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << EOF
-            pgrep java | xargs kill -9;
-            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > app.log 2>&1 &
+            ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << 'EOF'
+            # 기존 실행 중인 자바 프로세스 종료
+            CURRENT_PID=$(pgrep -f "java -jar")
+            if [ -z "$CURRENT_PID" ]; then
+              echo "No running application found."
+            else
+              echo "Killing process $CURRENT_PID"
+              kill -9 $CURRENT_PID
+              sleep 3
+            fi
+
+            # 애플리케이션 실행 (우리가 만든 로그 경로 활용)
+            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > /home/${{ secrets.AWS_EC2_USER }}/shoply/logs/app.log 2>&1 &
           EOF
 
       - name: Cleanup

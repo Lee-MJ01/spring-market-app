@@ -80,11 +80,12 @@
         GROUP BY
         p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY, p.MEM_ID,
         p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE, p.PROD_POINT, p.PROD_STOCK,
-        p.PROD_SOLD, p.PROD_HIT
+        p.PROD_SOLD, p.PROD_HIT,
+        p.PROD_RDATE
         ) p ON p.PROD_NO = pf.PROD_NO
         LEFT JOIN PROD_NOTICE pn ON p.PROD_NO = pn.PROD_NO
         WHERE
-        pf.F_DIST = 1
+        pf.F_DIST = '1'
     </select>
 
 
@@ -170,10 +171,10 @@
             WHERE
                 p.CATE2_NO = #{cate2_no}
             GROUP BY
-            p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY,
-            p.MEM_ID, p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE,
-            p.PROD_POINT, p.PROD_STOCK, p.PROD_SOLD, p.PROD_HIT,
-            p.PROD_RDATE
+                p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY,
+                p.MEM_ID, p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE,
+                p.PROD_POINT, p.PROD_STOCK, p.PROD_SOLD, p.PROD_HIT,
+                p.PROD_RDATE
         ) p ON pf.PROD_NO = p.PROD_NO
         WHERE
             pf.F_DIST = '1'
@@ -200,10 +201,11 @@
             GROUP BY
                 p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY, p.MEM_ID,
                 p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE, p.PROD_POINT, p.PROD_STOCK,
-                p.PROD_SOLD, p.PROD_HIT
+                p.PROD_SOLD, p.PROD_HIT,
+        p.PROD_RDATE
             ) p ON pf.PROD_NO = p.PROD_NO
         WHERE
-            pf.F_DIST = 1 AND p.PROD_NAME LIKE '%' || #{keyword} || '%'
+            pf.F_DIST = '1' AND p.PROD_NAME LIKE '%' || #{keyword} || '%'
         <include refid="sorting"/>
     </select>
 
@@ -228,10 +230,11 @@
                 GROUP BY
                     p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY, p.MEM_ID,
                     p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE, p.PROD_POINT, p.PROD_STOCK,
-                    p.PROD_SOLD, p.PROD_HIT
+                    p.PROD_SOLD, p.PROD_HIT,
+        p.PROD_RDATE
                 ) p ON pf.PROD_NO = p.PROD_NO
             WHERE
-                pf.F_DIST = 1 AND p.PROD_NAME LIKE '%' || #{keyword} || '%'
+                pf.F_DIST = '1' AND p.PROD_NAME LIKE '%' || #{keyword} || '%'
             ) p
         <where>
             <include refid="sorting2"/>
