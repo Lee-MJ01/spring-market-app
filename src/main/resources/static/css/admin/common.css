@@ -69,7 +69,7 @@ header .middle {
     padding-bottom: 20px;
     box-sizing: border-box;
     flex: 1;
-
+    padding-left: 260px;
 }
 
 /* 메인 전용 */
@@ -81,11 +81,12 @@ header .middle {
 
 .main-common {
     position: relative;
-    width: 1250px;
-    margin: 0 auto;
-    padding-top: 30px;
-    height: 100%;
-    min-height: 700px;
+    width: 100%;       /* 고정 너비 1250px 대신 100%로 변경 (유동적 대응) */
+   max-width: 1250px; /* 최대 너비는 유지 */
+   margin: 0;         /* 기존 margin: 0 auto; 를 margin: 0; 으로 변경 */
+   padding-top: 30px;
+   height: 100%;
+   min-height: 700px;
 }
 
 .main-content-top {
@@ -154,13 +155,13 @@ footer .middle {
     background-color: #2c3e50;
     color: #ecf0f1;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 4px 0 10px rgba(0,0,0,0.2);
     overflow-y: auto;
     overflow-x: hidden;
     transition: top 0.3s ease;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    z-index: 10; /* 다른 요소 위에 있도록 설정 */
+    z-index: 100; /* 다른 요소 위에 있도록 설정 */
 }
 .sidebar::-webkit-scrollbar { display: none; }
 

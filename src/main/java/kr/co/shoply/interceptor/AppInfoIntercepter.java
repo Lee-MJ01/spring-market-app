@@ -1,4 +1,4 @@
-package kr.co.shoply.intercepter;
+package kr.co.shoply.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

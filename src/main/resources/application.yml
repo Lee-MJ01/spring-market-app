@@ -14,7 +14,7 @@ server:
 spring:
   application:
     name: shoply
-    version: ${version}
+    version: 1.0.0-RELEASE
   security:
     oauth2:
       client:

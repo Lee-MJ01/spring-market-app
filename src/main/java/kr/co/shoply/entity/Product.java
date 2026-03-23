@@ -27,5 +27,7 @@ public class Product {
     private int prod_stock;
     private int prod_sold;
     private int prod_hit;
+    // Product.java 파일 내부에 추가
+    private java.util.Date prod_rdate;
 
 }

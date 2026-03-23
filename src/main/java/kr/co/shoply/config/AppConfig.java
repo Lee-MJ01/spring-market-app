@@ -1,6 +1,6 @@
 package kr.co.shoply.config;
 
-import kr.co.shoply.intercepter.AppInfoIntercepter;
+import kr.co.shoply.interceptor.AppInfoIntercepter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;

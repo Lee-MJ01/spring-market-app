@@ -170,12 +170,13 @@
             WHERE
                 p.CATE2_NO = #{cate2_no}
             GROUP BY
-                p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY, p.MEM_ID,
-                p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE, p.PROD_POINT, p.PROD_STOCK,
-                p.PROD_SOLD, p.PROD_HIT
+            p.PROD_NO, p.CATE2_NO, p.PROD_NAME, p.PROD_INFO, p.PROD_COMPANY,
+            p.MEM_ID, p.PROD_PRICE, p.PROD_SALE, p.PROD_DELIV_PRICE,
+            p.PROD_POINT, p.PROD_STOCK, p.PROD_SOLD, p.PROD_HIT,
+            p.PROD_RDATE
         ) p ON pf.PROD_NO = p.PROD_NO
         WHERE
-            pf.F_DIST = 1
+            pf.F_DIST = '1'
         <include refid="sorting"/>
     </select>
 
